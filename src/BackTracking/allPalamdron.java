@@ -16,6 +16,7 @@ class SolutionPalmdron{
 //        System.out.println(start);
         if (start==s.length()){
             ans.add(new ArrayList<>(temp));
+      System.out.println(ans.toString());
             return;
         }
 
@@ -47,6 +48,6 @@ class SolutionPalmdron{
 public class allPalamdron {
     public static void main(String args []){
         SolutionPalmdron solutionPalmdron=new SolutionPalmdron();
-        System.out.println(solutionPalmdron.solve("aa"));
+        System.out.println(solutionPalmdron.solve("abca"));
     }
 }

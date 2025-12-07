@@ -1,4 +1,6 @@
 import javax.sound.sampled.EnumControl;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -83,6 +85,7 @@ public class PracticeClass {
         A a= new B();
         a.display();
 
+//        for the filter that phone number of the people that have in sampe
         List<Person> persons = Arrays.asList(
                 new Person("Charlie", 25,Arrays.asList("123456890", "9876543210", "5678901234")),
                 new Person("Bo1b", 30,Arrays.asList("123456890", "9876543210", "5678901234")),
@@ -108,11 +111,14 @@ public class PracticeClass {
                 .collect(Collectors.groupingBy(Map.Entry::getKey,Collectors.mapping(Map.Entry::getValue,Collectors.toList())));
 
 
+        persons.stream().flatMap(person -> person.getNumber()
+                .stream().map(number->Map.entry(number,person.getName())))
+                .collect(Collectors.groupingBy(Map.Entry::getKey,Collectors.mapping(Map.Entry::getValue,Collectors.toList())));
 
         Map<String, List<String>> data_after_sort=   numberToPersonsMap.entrySet().stream().filter(entity->entity.getValue().size()>1)
                 .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue));
 
-                data_after_sort.entrySet().stream().forEach(data-> System.out.println("data for sorting"+ data.getKey()));
+                data_after_sort.entrySet().stream().forEach(data-> System.out.println("data for sorting :: "+ data.getValue() +"::"+ data.getKey()));
 
         List<Integer> numbers = Arrays.asList(2, 4, 15, 3, 8, 12);
 //        numbers.stream().filter(n->n>10).map(n->n*n).forEach(n->System.out.print(n + " "));
@@ -131,7 +137,9 @@ public class PracticeClass {
                 Arrays.asList(7, 8, 9)
         );
         listOfLists.stream().flatMap(List::stream).collect(Collectors.toList());
-            
+
+
+//         code for counting  the valu that are comming inthe list how may time
         List<String> words = Arrays.asList("apple", "banana", "apple", "apple", "orange");
        Map<String,Long>data= words.stream().collect(Collectors.groupingBy(x->x,Collectors.counting()));
 data.entrySet().stream().forEach(e-> System.out.println("edat " + e.getKey() +" count is "+ e.getValue()));
@@ -139,7 +147,7 @@ data.entrySet().stream().forEach(e-> System.out.println("edat " + e.getKey() +" 
         persons.stream().sorted(Comparator.comparing(Person::getAge).reversed()).limit(2).forEach(x-> System.out.println(x.getName()));
 
 
-
+// similer code for the paragraph
         String dataChanger ="data is the main value that we gona use is";
 
         Map<String,Long> dataTransfer=Arrays.stream(dataChanger.split("\\s")).collect(Collectors.groupingBy(w->w,Collectors.counting()));
@@ -165,6 +173,26 @@ data.entrySet().stream().forEach(e-> System.out.println("edat " + e.getKey() +" 
         
         System.out.println(sortedByKey);
 
+// checking decimal
+        int[] numbersdata = {10, 20, 33, 4, 50};  // Array of integers
+
+        int sum = 0;
+        // Calculate sum
+        for (int num : numbersdata) {
+            sum += num;
+        }
+
+        // Calculate average
+        double value = (double) sum / numbersdata.length;
+
+        // Option 1: Using String.format to round to 2 decimal places
+        String formattedValue = String.format("%.2f", value);
+        System.out.println("Formatted Average (String.format): " + formattedValue);
+
+        // Option 2: Using BigDecimal to round to 2 decimal places
+        BigDecimal bigDecimal = new BigDecimal(value);
+        bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP); // Rounds to two decimal places
+        System.out.println("Formatted Average (BigDecimal): " + bigDecimal.doubleValue());
 
     }
 }
