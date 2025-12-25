@@ -18,7 +18,7 @@ class bstAVL {
             root.right = insert(root.right, value);
         }
         root.height = Math.max(height(root.left), height(root.right)) + 1;
-        return rotateNode(root);
+        return rebalance(root);
     }
 
     public int height(Node root) {
@@ -50,7 +50,7 @@ class bstAVL {
         }
     }
 
-    public Node rotateNode(Node root) {
+    public Node rebalance(Node root) {
         // right heavy
         if (height(root.right) - height(root.left) > 1) {
             if (height(root.right.right) - height(root.right.left) > 0) {
@@ -97,6 +97,37 @@ class bstAVL {
         temp.height = Math.max(height(temp.left), height(temp.right))+1;
 
         return temp;
+    }
+
+    public Node deleteNode(Node root, int value){
+        if(root==null){
+            return null;
+        }
+        if(root.value>value){
+            root.left =deleteNode(root.left,value);
+        }
+        else if(root.value<value){
+            root.right =deleteNode(root.right,value);
+        }else{
+            if(root.left==null || root.right==null){
+                root= (root.left!=null)?root.left:root.right;
+            }else{
+                Node succesure = findNextSmall(root.right);
+                root.value=succesure.value;
+                root.right=deleteNode(root.right,succesure.value);
+            }
+        }
+        if (root == null) return null;
+        root.height = Math.max(height(root.left), height(root.right)) + 1;
+
+        return rebalance(root);
+    }
+
+    public Node findNextSmall(Node root){
+        while(root.left!=null){
+            root=root.left;
+        }
+        return root;
     }
 }
 

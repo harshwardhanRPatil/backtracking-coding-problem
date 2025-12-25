@@ -116,7 +116,7 @@ class BST {
 public class TreeCreation {
   public static void main(String args[]) {
     BST tree = new BST();
-    int[] values = {23,15,14,13,20,26,24,23,25,27};
+    int[] values = {23, 15, 14, 13, 20, 26, 24, 23, 25, 27};
     for (int val : values) {
       tree.root = tree.insert(tree.root, val);
     }
@@ -133,17 +133,17 @@ public class TreeCreation {
     tree.postorder(tree.root);
     System.out.println();
 
-    tree.deleteNode(tree.root,23);
-      System.out.print("Inorder Traversal after deletion: ");
-      tree.inorder(tree.root);
-      System.out.println();
+    tree.deleteNode(tree.root, 23);
+    System.out.print("Inorder Traversal after deletion: ");
+    tree.inorder(tree.root);
+    System.out.println();
 
-      System.out.print("preorder Traversal after deletion: ");
-      tree.preorder(tree.root);
-      System.out.println();
+    System.out.print("preorder Traversal after deletion: ");
+    tree.preorder(tree.root);
+    System.out.println();
 
-      System.out.print("postorder Traversal after deletion: ");
-      tree.postorder(tree.root);
-      System.out.println();
+    System.out.print("postorder Traversal after deletion: ");
+    tree.postorder(tree.root);
+    System.out.println();
   }
 }
