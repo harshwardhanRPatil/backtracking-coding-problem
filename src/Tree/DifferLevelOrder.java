@@ -33,28 +33,58 @@ class DifferLevelOrderSolution {
     return ans;
   }
 
-    public List<Integer> rightSideView(TreeNode root) {
-        List<Integer> ans = new ArrayList<>();
-        if (root == null) return ans;
+  public List<Integer> rightSideView(TreeNode root) {
+    List<Integer> ans = new ArrayList<>();
+    if (root == null) return ans;
 
-        Queue<TreeNode> queue = new ArrayDeque<>();
-        queue.offer(root);
+    Queue<TreeNode> queue = new ArrayDeque<>();
+    queue.offer(root);
 
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            int right_ans=0;
-            for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                right_ans=node.val;
+    while (!queue.isEmpty()) {
+      int size = queue.size();
+      int right_ans = 0;
+      for (int i = 0; i < size; i++) {
+        TreeNode node = queue.poll();
+        right_ans = node.val;
 
-                if (node.left != null) queue.offer(node.left);
-                if (node.right != null) queue.offer(node.right);
-            }
+        if (node.left != null) queue.offer(node.left);
+        if (node.right != null) queue.offer(node.right);
+      }
 
-            ans.add(right_ans); // no clearing needed
-        }
-        return ans;
+      ans.add(right_ans); // no clearing needed
     }
+    return ans;
+  }
+
+  public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    List<List<Integer>> ans = new LinkedList<>();
+    Stack<TreeNode> queue = new Stack<>();
+      if (root == null) return ans;
+    queue.add(root);
+    boolean right = true;
+
+    while (!queue.isEmpty()) {
+      int size = queue.size();
+      List<Integer> level = new ArrayList<>();
+        Stack<TreeNode> temp = new Stack<>();
+      for (int i = 0; i < size; i++) {
+        TreeNode node = queue.pop();
+        level.add(node.val);
+        if (right) {
+          if (node.left != null) temp.add(node.left);
+          if (node.right != null) temp.add(node.right);
+        } else {
+          if (node.right != null) temp.add(node.right);
+          if (node.left != null) temp.add(node.left);
+        }
+      }
+      right = !right;
+      ans.add(level);
+      queue=temp;
+    }
+
+    return ans;
+  }
 }
 
 public class DifferLevelOrder {
