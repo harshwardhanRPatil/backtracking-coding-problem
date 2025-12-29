@@ -4,7 +4,7 @@ import java.util.*;
 
 class DifferLevelOrderSolution {
 
-  int diametermaxcoun = 0;
+  int diametermaxcoun = Integer.MIN_VALUE;
 
   public List<List<Integer>> levelOrder(TreeNode root) {
     // declar the linklist for the LIst<List>
@@ -228,6 +228,25 @@ class DifferLevelOrderSolution {
 
     diametermaxcoun = Math.max(diametermaxcoun, (left + right + 1));
     return Math.max(left, right) + 1;
+  }
+
+
+  public int maxPathSum(TreeNode root) {
+    diameterOfBinaryTreeFinderII(root);
+    return diametermaxcoun;
+  }
+
+  public int diameterOfBinaryTreeFinderII(TreeNode root) {
+    if (root == null) return 0;
+
+    int left = diameterOfBinaryTreeFinderII(root.left);
+    int right = diameterOfBinaryTreeFinderII(root.right);
+
+    left = Math.max(0, left);
+    right = Math.max(0, right);
+    int pathSum = left + right + root.val;
+    diametermaxcoun = Math.max(diametermaxcoun, pathSum);
+    return Math.max(left, right) + root.val;
   }
 }
 

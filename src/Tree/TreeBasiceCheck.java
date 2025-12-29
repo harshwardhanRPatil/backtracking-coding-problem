@@ -10,7 +10,12 @@ package Tree;
  * All methods use recursion and are optimized for O(n) time complexity.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 class TreeBasiceCheckSolution {
+  List<Integer> ans = new ArrayList<>();
+
   public boolean isBalanced(TreeNode root) {
     return heightfinder(root) != -1;
   }
@@ -88,6 +93,45 @@ class TreeBasiceCheckSolution {
     root.left = helper(nums, left, mid - 1);
     root.right = helper(nums, mid + 1, right);
     return root;
+  }
+
+  public void flatten(TreeNode root) {
+    root = treecreation(null, 0);
+  }
+
+  public TreeNode treecreation(TreeNode root, int pointer) {
+    if (pointer == ans.size()) return null;
+    if (root == null) root = new TreeNode(ans.get(pointer));
+    root.right = treecreation(root.left, pointer + 1);
+    return root;
+  }
+
+  public void preorder(TreeNode root) {
+    if (root != null) {
+      ans.add(root.val);
+      preorder(root.left);
+      preorder(root.right);
+    }
+  }
+
+  // using DFS after the video get the idea
+  public void flattenII(TreeNode root) {
+    if (root == null) return;
+
+    TreeNode current = root;
+    while (current != null) {
+      if (current.left != null) {
+        TreeNode temp = current.left;
+        while (temp.right != null) {
+          temp = temp.right;
+        }
+
+        temp.right = current.right;
+        current.right = current.left;
+        current.left = null;
+      }
+      current = current.right;
+    }
   }
 }
 

@@ -97,6 +97,20 @@ class AllPathSumSolution {
 
   }
      */
+
+  public int sumNumbers(TreeNode root) {
+    return helpersumNumbers(root, 0);
+  }
+
+  public int helpersumNumbers(TreeNode root, int sum) {
+    if (root == null) return 0;
+
+    sum = sum * 10 + root.val;
+    if (root.left == null && root.right == null) {
+      return sum;
+    }
+    return helpersumNumbers(root.left, sum) + helpersumNumbers(root.right, sum);
+  }
 }
 
 public class AllPathSum {}
