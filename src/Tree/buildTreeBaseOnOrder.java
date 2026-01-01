@@ -10,6 +10,8 @@ class buildTreeBaseOnOrderSolution {
   List<Integer> ans = new ArrayList<>();
   int pointer = 0;
   Map<Integer, Integer> inorderIndex = new HashMap<>();
+  TreeNode first = null;
+  TreeNode second = null;
 
   public TreeNode buildTree(int[] preorder, int[] inorder) {
     if (preorder.length == 0) return null;
@@ -30,6 +32,14 @@ class buildTreeBaseOnOrderSolution {
     return root;
   }
 
+  public TreeNode bstFromPreorder(int[] preorder) {
+    TreeNode root = null;
+    for (int i = 0; i < preorder.length; i++) {
+      root = insert(root, preorder[i]);
+    }
+    return root;
+  }
+
   public int finder(int[] inorder, int value) {
     for (int i = 0; i < inorder.length; i++) {
       if (inorder[i] == value) {
@@ -37,6 +47,27 @@ class buildTreeBaseOnOrderSolution {
       }
     }
     return 0;
+  }
+
+  public TreeNode buildTreeII(int[] inorder, int[] postorder) {
+    if (postorder.length == 0) return null;
+
+    for (int i = 0; i < inorder.length; i++) {
+      inorderIndex.put(inorder[i], i);
+    }
+    index = postorder.length - 1;
+    return helper(postorder, inorder, 0, inorder.length - 1);
+  }
+
+  public TreeNode helperII(int[] preorder, int[] inorder, int lowest, int highest) {
+    if (lowest > highest) return null;
+    TreeNode root = new TreeNode(preorder[index]);
+    int mid = inorderIndex.get(preorder[index]);
+    index--;
+    root.right = helper(preorder, inorder, mid + 1, highest);
+    root.left = helper(preorder, inorder, lowest, mid - 1);
+
+    return root;
   }
 
   // NOte we can use the strringbuef for the better time complecisty
@@ -122,6 +153,32 @@ class buildTreeBaseOnOrderSolution {
     root.right = insertII(root.right, value);
 
     return root;
+  }
+
+  public void recoverTree(TreeNode root) {
+    fallfounder(root, new TreeNode(Integer.MIN_VALUE),new TreeNode(Integer.MAX_VALUE));
+    int temp = first.val;
+    first.val = second.val;
+    second.val = temp;
+
+  }
+
+  public boolean fallfounder(TreeNode root, TreeNode min_value, TreeNode max_value) {
+    if (root == null) return true;
+
+    if (root.val < min_value.val) {
+      first = min_value;
+      second = root;
+      return false;
+    }
+
+    if (root.val > max_value.val) {
+      first = max_value;
+      second = root;
+      return false;
+    }
+    return fallfounder(root.left, min_value, root)
+        || fallfounder(root.right, root, max_value);
   }
 }
 

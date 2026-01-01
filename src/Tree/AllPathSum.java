@@ -1,11 +1,9 @@
 package Tree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 class AllPathSumSolution {
+  Map<TreeNode, int[]> memo = new HashMap<>();
 
   public boolean hasPathSum(TreeNode root, int targetSum) {
     if (root == null) {
@@ -110,6 +108,32 @@ class AllPathSumSolution {
       return sum;
     }
     return helpersumNumbers(root.left, sum) + helpersumNumbers(root.right, sum);
+  }
+
+  public int rob(TreeNode root) {
+    return Math.max(houseToRob(root, false), houseToRob(root, true));
+  }
+
+  public int houseToRob(TreeNode root, boolean canRob) {
+    if (root == null) return 0;
+    memo.putIfAbsent(root, new int[] {-1, -1});
+    int idx = canRob ? 1 : 0;
+
+    // we have already valuse for that data we are return that data
+    if (memo.get(root)[idx] != -1) return memo.get(root)[idx];
+
+    int res;
+    if (canRob) {
+      int rob = root.val + houseToRob(root.left, false) + houseToRob(root.right, false);
+
+      int skip = houseToRob(root.left, true) + houseToRob(root.right, true);
+
+      res = Math.max(rob, skip);
+    } else {
+      res = houseToRob(root.left, true) + houseToRob(root.right, true);
+    }
+    memo.get(root)[idx] = res;
+    return res;
   }
 }
 

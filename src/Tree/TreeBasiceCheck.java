@@ -15,7 +15,7 @@ import java.util.List;
 
 class TreeBasiceCheckSolution {
   List<Integer> ans = new ArrayList<>();
-
+    int goodNodeCounter=0;
   public boolean isBalanced(TreeNode root) {
     return heightfinder(root) != -1;
   }
@@ -133,6 +133,18 @@ class TreeBasiceCheckSolution {
       current = current.right;
     }
   }
+    public int goodNodes(TreeNode root) {
+        goodNodesFinder(root,root.val);
+      return goodNodeCounter;
+    }
+    public void goodNodesFinder(TreeNode root,int max_val){
+      if (root==null) return;
+
+      if(root.val>=max_val) goodNodeCounter++;
+        goodNodesFinder(root.left,Math.max(max_val,root.val));
+                goodNodesFinder(root.right,Math.max(max_val,root.val));
+
+    }
 }
 
 public class TreeBasiceCheck {
