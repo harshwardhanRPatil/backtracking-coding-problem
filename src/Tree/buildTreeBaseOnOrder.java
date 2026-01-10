@@ -156,30 +156,25 @@ class buildTreeBaseOnOrderSolution {
   }
 
   public void recoverTree(TreeNode root) {
-    fallfounder(root, new TreeNode(Integer.MIN_VALUE),new TreeNode(Integer.MAX_VALUE));
+      preorder(root);
+
+      for(int i=0;i<ans.size()-1;i++){
+          TreeNode prev=ans.get(i);
+          TreeNode temp=ans.get(i+1);
+          if(prev.val>temp.val){
+              if(first==null){
+                  first=prev;
+              }else{
+                  second=prev;
+              }
+          }
+      }
     int temp = first.val;
     first.val = second.val;
     second.val = temp;
-
   }
 
-  public boolean fallfounder(TreeNode root, TreeNode min_value, TreeNode max_value) {
-    if (root == null) return true;
 
-    if (root.val < min_value.val) {
-      first = min_value;
-      second = root;
-      return false;
-    }
-
-    if (root.val > max_value.val) {
-      first = max_value;
-      second = root;
-      return false;
-    }
-    return fallfounder(root.left, min_value, root)
-        || fallfounder(root.right, root, max_value);
-  }
 }
 
 public class buildTreeBaseOnOrder {}

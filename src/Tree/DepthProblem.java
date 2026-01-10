@@ -6,6 +6,8 @@ class DepthProblemSolution {
 
   List<List<Integer>> ans = new ArrayList<>();
   int count = 0;
+  long maxVal = 0;
+  long totalSum = 0;
 
   public int maxDepth(Node root) {
     if (root == null) {
@@ -169,6 +171,89 @@ class DepthProblemSolution {
   // at most one bit set
   public boolean isPseudoPalindrome(int mask) {
     return (mask & (mask - 1)) == 0;
+  }
+
+  public int maxLevelSum(TreeNode root) {
+    if (root == null) return -1;
+
+    // Step 2: get depth and create array
+    int depth = maxDepth(root);
+    int[] levelSum = new int[depth]; // auto filled with 0
+
+    // Step 3: DFS with level
+    dfs(root, 0, levelSum);
+
+    // Step 4: find level with max sum
+    int maxVal = Integer.MIN_VALUE;
+    int levelIndex = 0;
+
+    for (int i = 0; i < levelSum.length; i++) {
+      if (levelSum[i] > maxVal) {
+        maxVal = levelSum[i];
+        levelIndex = i;
+      }
+    }
+
+    return levelIndex + 1; // 0-based level
+  }
+
+  public int maxDepth(TreeNode root) {
+    if (root == null) return 0;
+    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+  }
+
+  private void dfs(TreeNode root, int level, int[] levelSum) {
+    if (root == null) return;
+
+    levelSum[level] += root.val;
+
+    dfs(root.left, level + 1, levelSum);
+    dfs(root.right, level + 1, levelSum);
+  }
+
+  public int minSubArrayLen(int target, int[] nums) {
+    int size = nums.length;
+    int max_length = Integer.MAX_VALUE;
+
+    int sum_value = 0;
+    int i = 0;
+    for (int j = 0; j < size; j++) {
+      sum_value += nums[j];
+
+      while (sum_value >= target) {
+        max_length = Math.min(max_length, j - i + 1);
+        sum_value -= nums[i];
+        i++;
+      }
+    }
+    return max_length == Integer.MAX_VALUE ? 0 : max_length;
+  }
+
+  public int maxProduct(TreeNode root) {
+    totalSum = findTotalSum(root);
+    if (root == null) return (int) (maxVal % 1000000007);
+    dfsmaxProduct(root.left);
+    dfsmaxProduct(root.right);
+    return (int) (maxVal % 1000000007);
+  }
+
+  private long findTotalSum(TreeNode root) {
+    if (root == null) return 0;
+    return root.val + findTotalSum(root.left) + findTotalSum(root.right);
+  }
+
+  private long dfsmaxProduct(TreeNode root) {
+    if (root == null) return 0;
+
+    long left = dfsmaxProduct(root.left);
+    long right = dfsmaxProduct(root.right);
+
+    long subtreeSum = left + right + root.val;
+
+    long product = subtreeSum * (totalSum - subtreeSum);
+    maxVal = Math.max(maxVal, product);
+
+    return subtreeSum; // return for parent use
   }
 }
 
